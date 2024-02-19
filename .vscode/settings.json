@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    ".vscode": true
+  },
+  "editor.tabSize": 2,
+  "[verilog]": {
+    "editor.tabSize": 2,
+    "files.eol": "\n"
+  },
+  "files.eol": "\n"
+}

@@ -1,0 +1,67 @@
+= A Verilator Based RTL Simulation Flow
+
+== Introduction
+This project serves as a demo project to develop RTL with Verilator flow.
+
+In the backend, Verilator compiles the RTL files into C++ source files, and compiles/links with the testbench `tb_top` to generate the simulation executable `sim/verilator/obj_dir/Vtb_top`, which can be run directly on the host machine.
+
+The default C++ wrapper `sim_main.cpp` (`Vtb_top`) expects an argument for how many cycles it simulates. The expected usage is: `$ Vtb_top [cycles]`
+
+== File and Design Structure
+.Directory and File Description
+[options="header",cols="1,5"]
+|===
+|Name                   |Description
+|`.vscode/`             |VS Code Workspace Files
+|`tb/sim_main.cpp`      |Top-level wrapper over tb_top
+|`tb/tb_top.sv`         |Top-level Testbench
+|`sim/verilator/obj_dir`|Compiled object files and simulator executable
+|`rtl/flist.f`          |File list of the design
+|`rtl/*.{v,sv}`         |Design source files
+|`Makefile`             |Main Makefile
+|`README.adoc`          |This document
+|===
+
+.Design Hierarchy
+----
+tb/sim_main.cpp
+  tb/tb_top.sv
+    rtl/*.{v,sv}
+----
+
+== How to Add Source Files
+. Put `.v`/`.sv` design files under `rtl/`
+. Append newly added files to the `rtl/flist.f`
+
+== How to Instantiate Top-level Module in the Testbench
+Instantiate it as usual in the top-level testbench `tb/tb_top.sv`.
+
+Please note that unlike some simulators, in Verilator `clk` and `rst_n` are driven by the C++ wrapper since it can only run cycle-based simulation.
+
+In later version event control support are added but this is not enabled for simulation speed. See verilator manual for more.
+
+== How to Compile the Simulator
+`$ make sim`
+
+== How to Run Simulation
+`$ make run` # this will run the simulation for default 1000 cycles
+
+`$ CYCLES=2000 make run` # this will run the simulation for 2000 cycles
+
+== How to View Waveform
+`$ make wave` # run GTKWave to view waveform at sim/verilator/obj_dir/sim.vcd
+
+GTKWave supports reloading waveform without closing the window similar to Verdi. There are 3 ways to do that:
+
+. Click the `Reload` button on the top menu
+. File->Reload Waveform
+. CTRL+SHIFT+R (similar to SHIFT+L in Verdi)
+
+== VS Code Integration
+. Open VS Code
+. File->Open Folder and choose this directory
+. To build and run the simulation, press `CTRL+SHIFT+B` shortcut
+
+== Reference
+. link:https://verilator.org/guide/latest/exe_verilator.html[verilator Arguments]
+. link:https://itsembedded.com/dhd_list/#verilator-and-c-testbenches[Verilator and C++ testbenches]
