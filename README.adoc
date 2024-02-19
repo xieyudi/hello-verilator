@@ -38,7 +38,7 @@ Instantiate it as usual in the top-level testbench `tb/tb_top.sv`.
 
 Please note that unlike some simulators, in Verilator `clk` and `rst_n` are driven by the C++ wrapper since it can only run cycle-based simulation.
 
-In later version event control support are added but this is not enabled for simulation speed. See verilator manual for more.
+In later versions of Verilator event control support was added, but this is not enabled for simulation speed. See verilator manual for more.
 
 == How to Compile the Simulator
 `$ make sim`
